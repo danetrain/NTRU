@@ -76,3 +76,8 @@ if __name__ == "__main__":
     p2 = NTRUPoly([-3, 2, 1])
     gcd, s, t = p1.extended_euclid(p2)
     assert [-1, 1] == gcd._coeff
+
+    p1 = NTRUPoly([1,1,-1,0,-1,1])
+    p2 = NTRUPoly([-1,0,1,1,0,0,-1])
+    gcd, s, t = p1.extended_euclid(p2)
+    assert [1] == gcd._coeff

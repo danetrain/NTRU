@@ -86,7 +86,7 @@ class NTRUPoly(object):
                 shift = N.degree() - D.degree()
                 d = NTRUPoly([0]*shift + D._coeff)
                 new_q_coeff = q._coeff + [0]*N.degree()
-                new_q_coeff[shift] = N._coeff[-1] / float(d._coeff[-1])
+                new_q_coeff[shift] = new_q_coeff[shift] + (N._coeff[-1] / float(d._coeff[-1]))
                 q = NTRUPoly(new_q_coeff)
                 d = d * NTRUPoly([new_q_coeff[shift]])
                 N = N - d
@@ -111,12 +111,19 @@ class NTRUPoly(object):
         y_0 = self.__class__([0])
         y_1 = self.__class__([1])
 
+        iters = 0
         while b._coeff != [0]:
             q, r = a.div(b)
             a = b
             b = r
+            print "a: " + str(a._coeff)
+            print "b: " + str(b._coeff)
             x_0, x_1 = x_1, x_0 - (q*x_1)
             y_0, y_1 = y_1, y_0 - (q*y_1)
+
+            iters = iters+1
+            if iters == 1000:
+                break
 
         # Flip x,y if we swapped inputs
         if len(self._coeff) <  len(poly._coeff):
